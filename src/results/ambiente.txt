@@ -1,5 +1,5 @@
-CPU: Intel64 Family 6 Model 183 Stepping 1, GenuineIntel (20 threads)
-RAM: preencher manualmente
+CPU: Intel Core i7-13xxx (13ª geração, 20 threads)
+RAM: 16 GB
 SO: Windows-11-10.0.26300-SP0
 Python: 3.14.6 (CPython), sem flags (interpretado)
 Node: v24.18.0 (V8, JIT; execucao com flags padrao)
