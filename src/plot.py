@@ -115,7 +115,7 @@ def main():
 
     idx = {(r["case"], r["n"], r["algo"], r["lang"]): r for r in rows}
     keys = sorted({(r["case"], r["n"], r["m"]) for r in rows}, key=lambda k: (CASES.index(k[0]), k[1]))
-    with open(os.path.join(RES, "tabela.md"), "w") as f:
+    with open(os.path.join(RES, "tabela.md"), "w", encoding="utf-8") as f:
         f.write("| Caso | V | E | Dijkstra Py (ms) | Dijkstra JS (ms) | Bellman-Ford Py (ms) | Bellman-Ford JS (ms) |\n")
         f.write("|---|---|---|---|---|---|---|\n")
         for case, n, m in keys:
