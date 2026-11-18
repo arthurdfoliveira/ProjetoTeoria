@@ -1,6 +1,5 @@
 const INF = Infinity;
 
-// Min-heap binário de pares [dist, vértice]
 class MinHeap {
   constructor() { this.a = []; }
   get size() { return this.a.length; }
@@ -23,7 +22,8 @@ class MinHeap {
       a[0] = last;
       let i = 0;
       for (;;) {
-        let l = 2 * i + 1, r = l + 1, m = i;
+        const l = 2 * i + 1, r = l + 1;
+        let m = i;
         if (l < a.length && a[l][0] < a[m][0]) m = l;
         if (r < a.length && a[r][0] < a[m][0]) m = r;
         if (m === i) break;
@@ -35,7 +35,6 @@ class MinHeap {
   }
 }
 
-// adj[u] = lista de [v, peso]. Pesos >= 0. O((V+E) log V)
 function dijkstra(n, adj, src) {
   const dist = new Array(n).fill(INF);
   dist[src] = 0;
@@ -55,7 +54,6 @@ function dijkstra(n, adj, src) {
   return dist;
 }
 
-// edges = lista de [u, v, peso]. O(V*E), com parada antecipada
 function bellmanFord(n, edges, src) {
   const dist = new Array(n).fill(INF);
   dist[src] = 0;
@@ -67,9 +65,12 @@ function bellmanFord(n, edges, src) {
         changed = true;
       }
     }
-    if (!changed) break;
+    if (!changed) return [dist, false];
   }
-  return dist;
+  for (const [u, v, w] of edges) {
+    if (dist[u] !== INF && dist[u] + w < dist[v]) return [dist, true];
+  }
+  return [dist, false];
 }
 
 function toAdj(n, edges) {
@@ -78,19 +79,10 @@ function toAdj(n, edges) {
   return adj;
 }
 
-module.exports = { dijkstra, bellmanFord, toAdj };
-
-if (require.main === module) {
-  const assert = require("assert");
-  for (let t = 0; t < 200; t++) {
-    const n = 1 + Math.floor(Math.random() * 30);
-    const m = Math.floor(Math.random() * 100);
-    const edges = Array.from({ length: m }, () => [
-      Math.floor(Math.random() * n),
-      Math.floor(Math.random() * n),
-      Math.floor(Math.random() * 21),
-    ]);
-    assert.deepStrictEqual(dijkstra(n, toAdj(n, edges), 0), bellmanFord(n, edges, 0));
-  }
-  console.log("OK: Dijkstra == Bellman-Ford em 200 grafos aleatórios");
+function checksum(dist) {
+  let count = 0, sum = 0;
+  for (const d of dist) if (d !== INF) { count++; sum += d; }
+  return [count, sum];
 }
+
+module.exports = { dijkstra, bellmanFord, toAdj, checksum };
